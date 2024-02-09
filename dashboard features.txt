@@ -1,0 +1,32 @@
+1) bitcoin seasonality chart (heat map of monthly returns)
+2) bitcoin seasonality chart (average cumulative return day by day)
+3) pi top indicator
+4) MVRV Z-Score https://twitter.com/money_zg/status/1755561614240039157/photo/1
+5) stock 2 flow model https://charts.bitbo.io/stock-to-flow/
+6) incorporate Moody dashboard https://bitcoin.clarkmoody.com/dashboard/
+7) RSI (test which time frame is best though) https://charts.bitbo.io/monthly-rsi/
+8) incorporate BiBo dashboard https://charts.bitbo.io/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
