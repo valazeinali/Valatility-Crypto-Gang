@@ -5,7 +5,8 @@ import requests
 from datetime import datetime, timedelta
 
 # Retrieve Bitcoin daily prices
-#btc = yf.download('BTC-USD', start='2010-01-01', end='2100-02-13')
+# btc = yf.download('BTC-USD', start='2010-01-01', end='2100-02-13')
+
 
 # get data
 def get_all_time_historical_data(symbol, currency):
@@ -25,77 +26,109 @@ def get_all_time_historical_data(symbol, currency):
             start_date_unix = int(start_date.timestamp())
 
             # Make request to CryptoCompare API
-            url = 'https://min-api.cryptocompare.com/data/v2/histoday'
+            url = "https://min-api.cryptocompare.com/data/v2/histoday"
             parameters = {
-                'fsym': symbol,
-                'tsym': currency,
-                'limit': (end_date - start_date).days,
-                'toTs': end_date_unix
+                "fsym": symbol,
+                "tsym": currency,
+                "limit": (end_date - start_date).days,
+                "toTs": end_date_unix,
             }
             response = requests.get(url, params=parameters)
             data = response.json()
 
             # Extract daily close prices
-            for entry in data['Data']['Data']:
-                date = datetime.utcfromtimestamp(entry['time']).strftime('%Y-%m-%d')
-                all_time_data[date] = entry['close']
+            for entry in data["Data"]["Data"]:
+                date = datetime.utcfromtimestamp(entry["time"]).strftime("%Y-%m-%d")
+                all_time_data[date] = entry["close"]
 
         return all_time_data
     except Exception as e:
         print("An error occurred:", e)
         return None
 
+
 # Get all-time historical data from CryptoCompare API
-symbol = 'BTC'
-currency = 'USD'
+symbol = "BTC"
+currency = "USD"
 bitcoin_all_time_data = get_all_time_historical_data(symbol, currency)
 
 if bitcoin_all_time_data:
     # Create DataFrame from the dictionary
-    btc = pd.DataFrame(list(bitcoin_all_time_data.items()), columns=['Date', 'Close'])
-    btc['Date'] = pd.to_datetime(btc['Date'])  # Convert Date column to datetime type
-    btc = btc.set_index('Date')  # Set Date column as index
-    
+    btc = pd.DataFrame(list(bitcoin_all_time_data.items()), columns=["Date", "Close"])
+    btc["Date"] = pd.to_datetime(btc["Date"])  # Convert Date column to datetime type
+    btc = btc.set_index("Date")  # Set Date column as index
+
 else:
     print("Failed to retrieve data.")
 
 # Calculate moving averages
-btc['111DMA'] = btc['Close'].rolling(window=111).mean()
-btc['350DMA*2'] = btc['Close'].rolling(window=350).mean()*2
+btc["111DMA"] = btc["Close"].rolling(window=111).mean()
+btc["350DMA*2"] = btc["Close"].rolling(window=350).mean() * 2
 
 # Calculate Pi Cycle Top Indicator
-btc['PiTop'] = btc[['111DMA', '350DMA*2']].max(axis=1)
+btc["PiTop"] = btc[["111DMA", "350DMA*2"]].max(axis=1)
 
 # Find where 111DMA > 350DMA * 2
-btc['Highlight'] = btc['111DMA'] > btc['350DMA*2']
+btc["Highlight"] = btc["111DMA"] > btc["350DMA*2"]
 
 # Create an interactive plotly graph
 fig = go.Figure()
 
 # Add Bitcoin closing prices
-fig.add_trace(go.Scatter(x=btc.index, y=btc['Close'], mode='lines', name='Bitcoin Close Price',line=dict(color='orange')))
+fig.add_trace(
+    go.Scatter(
+        x=btc.index,
+        y=btc["Close"],
+        mode="lines",
+        name="Bitcoin Close Price",
+        line=dict(color="orange"),
+    )
+)
 
 # Add moving averages
-fig.add_trace(go.Scatter(x=btc.index, y=btc['111DMA'], mode='lines', name='111-day Moving Average', line=dict(color='#FF97FF')))
-fig.add_trace(go.Scatter(x=btc.index, y=btc['350DMA*2'], mode='lines', name='350-day Moving Average x2', line=dict(color='CYAN')))
+fig.add_trace(
+    go.Scatter(
+        x=btc.index,
+        y=btc["111DMA"],
+        mode="lines",
+        name="111-day Moving Average",
+        line=dict(color="#FF97FF"),
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=btc.index,
+        y=btc["350DMA*2"],
+        mode="lines",
+        name="350-day Moving Average x2",
+        line=dict(color="CYAN"),
+    )
+)
 
 # Add Pi Cycle Top Indicator
-#fig.add_trace(go.Scatter(x=btc.index, y=btc['PiTop'], mode='lines', name='Pi Cycle Top Indicator', line=dict(color='red')))
+# fig.add_trace(go.Scatter(x=btc.index, y=btc['PiTop'], mode='lines', name='Pi Cycle Top Indicator', line=dict(color='red')))
 
 # Highlight areas where 111DMA > 350DMA * 2
-highlighted_dates = btc[btc['Highlight']].index
-highlighted_prices = btc[btc['Highlight']]['Close']
-fig.add_trace(go.Scatter(x=highlighted_dates, y=highlighted_prices, mode='markers',
-                         marker=dict(color='red', size=6), name='111DMA > (350DMA * 2)'))
+highlighted_dates = btc[btc["Highlight"]].index
+highlighted_prices = btc[btc["Highlight"]]["Close"]
+fig.add_trace(
+    go.Scatter(
+        x=highlighted_dates,
+        y=highlighted_prices,
+        mode="markers",
+        marker=dict(color="red", size=6),
+        name="111DMA > (350DMA * 2)",
+    )
+)
 
 # Set layout with black background
 fig.update_layout(
-    title='Bitcoin Daily Prices with Moving Averages and Pi Cycle Top Indicator',
-    xaxis=dict(title='Date'),
-    yaxis=dict(title='Price',type='log'),
-    plot_bgcolor='black',
-    paper_bgcolor='black',
-    font=dict(color='white')
+    title="Bitcoin Daily Prices with Moving Averages and Pi Cycle Top Indicator",
+    xaxis=dict(title="Date"),
+    yaxis=dict(title="Price", type="log"),
+    plot_bgcolor="black",
+    paper_bgcolor="black",
+    font=dict(color="white"),
 )
 
 # Show the graph
