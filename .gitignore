@@ -1,0 +1,9 @@
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Jupyter Lab
+.jupyterlab-config
+
+# Environments
+.venv
+.vscode
