@@ -90,6 +90,7 @@ def get_historical_data(symbol, currency):
         df = pd.DataFrame(all_time_data, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
         df["Date"] = pd.to_datetime(df["Date"])  # Convert Date column to datetime type
         df = df.set_index("Date")  # Set Date column as index
+        df = df[~df.index.duplicated(keep='last')]
         df.to_parquet(filename)
         return df
 
