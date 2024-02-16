@@ -1,6 +1,8 @@
+from pathlib import Path
 import yfinance as yf
 import plotly.graph_objs as go
 import pandas as pd
+from datetime import datetime
 
 # Define a dictionary to map month numbers to names
 month_names = {
@@ -18,8 +20,10 @@ month_names = {
     12: "Dec",
 }
 
+current_date = datetime.now().strftime('%Y-%m-%d')
+
 # Retrieve Bitcoin daily prices
-btc = yf.download("BTC-USD", start="2010-01-01", end="2100-02-13")
+btc = yf.download("BTC-USD", start="2010-01-01", end=current_date)
 
 # Convert the daily prices to monthly returns
 btc_monthly_returns = btc["Adj Close"].resample("M").ffill().pct_change()
@@ -82,4 +86,13 @@ fig.update_layout(
     paper_bgcolor="black",
     font=dict(color="white"),
 )
+# Path to the directory where the image will be saved
+plots_dir = Path("figure")
+
+# Create the directory if it does not exist
+plots_dir.mkdir(parents=True, exist_ok=True)
+
+# Save the figure to a file (import kaleido package)
+fig.write_image("Bitcoin seasonality heatmap/figure/bitcoin_monthly_returns_heatmap.png")
+
 fig.show()
