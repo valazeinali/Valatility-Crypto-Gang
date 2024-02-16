@@ -75,8 +75,10 @@ def get_historical_data(symbol, currency):
             # Concatenate the new data with the old data
             new_df['Date'] = pd.to_datetime(new_df['Date'])
             new_df = new_df.set_index("Date")  # Set Date column as index
-            
-            df = pd.concat([df, new_df]).drop_duplicates().sort_index()
+
+           
+            df = pd.concat([df, new_df]).sort_index()
+            df = df[~df.index.duplicated(keep='last')]
             # Save the updated data to the parquet file
             df.to_parquet(filename)
             
