@@ -1,8 +1,9 @@
-import yfinance as yf
-import plotly.graph_objs as go
-import pandas as pd
-import requests
 from datetime import datetime, timedelta
+
+import pandas as pd
+import plotly.graph_objs as go
+import requests
+import yfinance as yf
 
 # Retrieve Bitcoin daily prices
 # btc = yf.download('BTC-USD', start='2010-01-01', end='2100-02-13')

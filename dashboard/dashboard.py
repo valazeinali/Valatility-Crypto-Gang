@@ -1,7 +1,8 @@
-import plotly.graph_objs as go
-import pandas as pd
-import requests
 from datetime import datetime
+
+import pandas as pd
+import plotly.graph_objs as go
+import requests
 import yfinance as yf
 
 
@@ -222,7 +223,7 @@ def get_bitcoin_seasonality_heatmap_plot():
 #########################################################################################################################################################################
 
 
-from dash import Dash, html, dcc
+from dash import Dash, dcc, html
 
 # Initialize the app
 app = Dash(__name__, assets_url_path="assets")

@@ -1,11 +1,11 @@
+import json
+import warnings
+from datetime import date, datetime
+
 import numpy as np
 import pandas as pd
-from pandas import json_normalize
-from datetime import datetime
-from datetime import date
-import warnings
 import requests
-import json
+from pandas import json_normalize
 
 warnings.filterwarnings("ignore")
 

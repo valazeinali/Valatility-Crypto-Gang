@@ -1,5 +1,5 @@
-import yfinance as yf
 import plotly.graph_objs as go
+import yfinance as yf
 
 # Retrieve ETH daily prices
 btc = yf.download("ETH-USD", start="2010-01-01", end="2100-02-13")
