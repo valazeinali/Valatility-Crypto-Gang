@@ -1,77 +1,26 @@
 from datetime import datetime
-
 import pandas as pd
 import plotly.graph_objs as go
-import requests
-import yfinance as yf
+from data.get_historical_data import get_historical_data
 
 
 def get_pi_cycle_top_plot():
     # get data
-    def get_all_time_historical_data(symbol, currency):
-        try:
-            # Initialize empty dictionary to store all-time historical data
-            all_time_data = {}
-
-            # Make request to CryptoCompare API for each year of data
-            current_year = datetime.now().year
-            start_year = 2010  # CryptoCompare data is available from 2010
-            for year in range(start_year, current_year + 1):
-                end_date = datetime(year + 1, 1, 1)
-                start_date = datetime(year, 1, 1)
-
-                # Convert dates to Unix timestamp format
-                end_date_unix = int(end_date.timestamp())
-                start_date_unix = int(start_date.timestamp())
-
-                # Make request to CryptoCompare API
-                url = "https://min-api.cryptocompare.com/data/v2/histoday"
-                parameters = {
-                    "fsym": symbol,
-                    "tsym": currency,
-                    "limit": (end_date - start_date).days,
-                    "toTs": end_date_unix,
-                }
-                response = requests.get(url, params=parameters)
-                data = response.json()
-
-                # Extract daily close prices
-                for entry in data["Data"]["Data"]:
-                    date = datetime.utcfromtimestamp(entry["time"]).strftime("%Y-%m-%d")
-                    all_time_data[date] = entry["close"]
-
-            return all_time_data
-        except Exception as e:
-            print("An error occurred:", e)
-            return None
 
     # Get all-time historical data from CryptoCompare API
     symbol = "BTC"
     currency = "USD"
-    bitcoin_all_time_data = get_all_time_historical_data(symbol, currency)
-
-    if bitcoin_all_time_data:
-        # Create DataFrame from the dictionary
-        btc = pd.DataFrame(
-            list(bitcoin_all_time_data.items()), columns=["Date", "Close"]
-        )
-        btc["Date"] = pd.to_datetime(
-            btc["Date"]
-        )  # Convert Date column to datetime type
-        btc = btc.set_index("Date")  # Set Date column as index
-
-    else:
-        print("Failed to retrieve data.")
+    data = get_historical_data(symbol, currency)
 
     # Calculate moving averages
-    btc["111DMA"] = btc["Close"].rolling(window=111).mean()
-    btc["350DMA*2"] = btc["Close"].rolling(window=350).mean() * 2
+    data["111DMA"] = data["Close"].rolling(window=111).mean()
+    data["350DMA*2"] = data["Close"].rolling(window=350).mean() * 2
 
     # Calculate Pi Cycle Top Indicator
-    btc["PiTop"] = btc[["111DMA", "350DMA*2"]].max(axis=1)
+    data["PiTop"] = data[["111DMA", "350DMA*2"]].max(axis=1)
 
     # Find where 111DMA > 350DMA * 2
-    btc["Highlight"] = btc["111DMA"] > btc["350DMA*2"]
+    data["Highlight"] = data["111DMA"] > data["350DMA*2"]
 
     # Create an interactive plotly graph
     fig = go.Figure()
@@ -79,8 +28,8 @@ def get_pi_cycle_top_plot():
     # Add Bitcoin closing prices
     fig.add_trace(
         go.Scatter(
-            x=btc.index,
-            y=btc["Close"],
+            x=data.index,
+            y=data["Close"],
             mode="lines",
             name="Bitcoin Close Price",
             line=dict(color="orange"),
@@ -90,8 +39,8 @@ def get_pi_cycle_top_plot():
     # Add moving averages
     fig.add_trace(
         go.Scatter(
-            x=btc.index,
-            y=btc["111DMA"],
+            x=data.index,
+            y=data["111DMA"],
             mode="lines",
             name="111-day Moving Average",
             line=dict(color="#FF97FF"),
@@ -99,8 +48,8 @@ def get_pi_cycle_top_plot():
     )
     fig.add_trace(
         go.Scatter(
-            x=btc.index,
-            y=btc["350DMA*2"],
+            x=data.index,
+            y=data["350DMA*2"],
             mode="lines",
             name="350-day Moving Average x2",
             line=dict(color="CYAN"),
@@ -111,8 +60,8 @@ def get_pi_cycle_top_plot():
     # fig.add_trace(go.Scatter(x=btc.index, y=btc['PiTop'], mode='lines', name='Pi Cycle Top Indicator', line=dict(color='red')))
 
     # Highlight areas where 111DMA > 350DMA * 2
-    highlighted_dates = btc[btc["Highlight"]].index
-    highlighted_prices = btc[btc["Highlight"]]["Close"]
+    highlighted_dates = data[data["Highlight"]].index
+    highlighted_prices = data[data["Highlight"]]["Close"]
     fig.add_trace(
         go.Scatter(
             x=highlighted_dates,
@@ -153,17 +102,21 @@ def get_bitcoin_seasonality_heatmap_plot():
         12: "Dec",
     }
 
-    # Retrieve Bitcoin daily prices
-    btc = yf.download("BTC-USD", start="2010-01-01", end="2100-02-13")
+    # Get all-time historical data from CryptoCompare API
+    symbol = "BTC"
+    currency = "USD"
+    
+    data = get_historical_data(symbol, currency)
+    
 
     # Convert the daily prices to monthly returns
-    btc_monthly_returns = btc["Adj Close"].resample("M").ffill().pct_change()
+    btc_monthly_returns = data["Close"].resample("M").ffill().pct_change()
 
     # Create a DataFrame that shows year and month for each row
     btc_monthly_returns_df = pd.DataFrame(btc_monthly_returns)
     btc_monthly_returns_df["Year"] = btc_monthly_returns_df.index.year
     btc_monthly_returns_df["Month"] = btc_monthly_returns_df.index.month
-    btc_monthly_returns_df["Returns"] = btc_monthly_returns_df["Adj Close"] * 100
+    btc_monthly_returns_df["Returns"] = btc_monthly_returns_df["Close"] * 100
 
     # Pivot the DataFrame to have years as rows, months as columns, and returns as values
     seasonality_df = btc_monthly_returns_df.pivot(
