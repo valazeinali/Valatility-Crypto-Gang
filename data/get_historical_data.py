@@ -52,7 +52,7 @@ def get_historical_data(symbol, currency):
                     all_time_data.append([date, open_price, high_price, low_price, close_price, volume])
             return all_time_data
         except Exception as e:
-            print("An error occurred:", e)
+            print("An historical data error occurred:", e)
             return None
         
     filename = f"{symbol}_{currency}_data.parquet"
@@ -63,11 +63,12 @@ def get_historical_data(symbol, currency):
         # Get the current date and time
         time_now = datetime.now().strftime('%Y-%m-%d')
 
-        last_date = df.index[-1].strftime('%Y-%m-%d')
+        last_date = df.index[-1]
 
-        if  last_date == time_now:
+        if  last_date.strftime('%Y-%m-%d') == time_now:
             return df
         else:
+            
             # Get the new data
             new_data = get_data(symbol, currency, last_date)
             # Convert the new data to a DataFrame
@@ -75,9 +76,14 @@ def get_historical_data(symbol, currency):
             
             # Concatenate the new data with the old data
             new_df['Date'] = pd.to_datetime(new_df['Date'])
+            
             new_df = new_df.set_index("Date")  # Set Date column as index
-
-           
+            
+            # Format the index as strings with the desired format
+            new_df.index = new_df.index.strftime('%Y-%m-%d')
+            
+            new_df.index = pd.to_datetime(new_df.index)
+            
             df = pd.concat([df, new_df]).sort_index()
             df = df[~df.index.duplicated(keep='last')]
             # Save the updated data to the parquet file
@@ -89,7 +95,7 @@ def get_historical_data(symbol, currency):
         all_time_data = get_data(symbol, currency)
         
         df = pd.DataFrame(all_time_data, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
-        df["Date"] = pd.to_datetime(df["Date"])  # Convert Date column to datetime type
+        df["Date"] = pd.to_datetime(df["Date"], utc=True)  # Convert Date column to datetime type
         df = df.set_index("Date")  # Set Date column as index
         df = df[~df.index.duplicated(keep='last')]
         df.to_parquet(filename)
@@ -138,7 +144,7 @@ def get_coinmetrics_data(symbol):
 
             return data
         except Exception as e:
-            print("An error occurred:", e)
+            print("An coinmetrics error occurred:", e)
             return None
         
     filename = f"{symbol}_S2F_data.parquet"
@@ -149,9 +155,9 @@ def get_coinmetrics_data(symbol):
         # Get the current date and time
         time_now = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
 
-        last_date = df.index[-1].strftime('%Y-%m-%d')
+        last_date = df.index[-1]
 
-        if  last_date == time_now:
+        if  last_date.strftime('%Y-%m-%d') == time_now:
             return df
         else:
             # Get the new data
