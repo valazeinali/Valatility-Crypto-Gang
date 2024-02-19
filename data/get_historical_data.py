@@ -149,7 +149,7 @@ def get_coinmetrics_data(symbol):
         # Get the current date and time
         time_now = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
 
-        last_date = df.index[-1]
+        last_date = df.index[-1].strftime('%Y-%m-%d')
 
         if  last_date == time_now:
             return df
