@@ -70,8 +70,8 @@ def get_pi_top_plot(symbol, currency):
         title=symbol + "Daily Prices with Moving Averages and Pi Cycle Top Indicator",
         xaxis=dict(title="Date"),
         yaxis=dict(title="Price", type="log"),
-        plot_bgcolor="black",
-        paper_bgcolor="black",
+        plot_bgcolor="#111111",
+        paper_bgcolor="#111111",
         font=dict(color="white"),
     )
 
