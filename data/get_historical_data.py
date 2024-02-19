@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pandas as pd
+from pandas import json_normalize
 import requests
 import os
 
@@ -100,8 +101,6 @@ def get_coinmetrics_data(symbol):
         try:
             # Get today's date
             today = datetime.now().date()
-                
-            
             yesterday = today - timedelta(days=1)
                 
             # Save yesterday's date as end_date
@@ -121,17 +120,21 @@ def get_coinmetrics_data(symbol):
 
             data = json_normalize(data["data"])
             
-            
+            # Convert 'time' column to datetime type if it's not already
             data['time'] = pd.to_datetime(data['time'], utc=True)
             
-            # Format the 'time' column as strings with the desired format
-            data['time'] = data['time'].dt.strftime('%Y-%m-%d')
+            # Drop duplicate entries in 'time' column
+            data = data.drop_duplicates(subset=['time'])
             
+            # Set the 'time' column as the index
             data = data.set_index('time')
             
+            # Format the index as strings with the desired format
+            data.index = data.index.strftime('%Y-%m-%d')
+            
+            data.index = pd.to_datetime(data.index)
             data.rename(columns={"SplyCur": "tsupply", "IssContNtv": "issuance"}, inplace=True)
             data = data.astype({'tsupply': 'float', 'issuance': 'float', 'CapMrktCurUSD': 'float', 'DiffMean': 'float'})
-
 
             return data
         except Exception as e:
