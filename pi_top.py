@@ -2,7 +2,7 @@ import plotly.graph_objs as go
 from data.get_historical_data import get_historical_data
 import numpy as np
 
-def get_pi_cycle_plot(symbol, currency):
+def get_pi_top_plot(symbol, currency):
     data = get_historical_data(symbol, currency)
     
     # Calculate moving averages
@@ -85,6 +85,6 @@ if __name__ == "__main__":
   symbol = 'BTC'
   currency = 'USD'
   
-  fig = get_pi_cycle_plot(symbol, currency)
+  fig = get_pi_top_plot(symbol, currency)
   
   fig.show()
