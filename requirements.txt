@@ -5,3 +5,4 @@ numpy
 plotly
 pyarrow
 fastparquet
+gunicorn
