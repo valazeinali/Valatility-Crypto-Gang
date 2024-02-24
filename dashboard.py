@@ -6,7 +6,7 @@ from pi_top import get_pi_top_plot
 
 # Initialize the app
 app = Dash(__name__, assets_url_path="assets")
-
+server = app.server
 app.title = "Valatility"
 
 colors = {
