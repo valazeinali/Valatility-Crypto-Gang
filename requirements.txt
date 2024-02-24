@@ -1,7 +1,7 @@
-dash==2.14.2
-dash-core-components==2.0.0
-dash-html-components==2.0.0
+dash
 pandas
-requests==2.31.0
-numpy==1.23.0
-plotly==5.15.0
+requests
+numpy
+plotly
+pyarrow
+fastparquet
