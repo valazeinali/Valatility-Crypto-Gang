@@ -67,11 +67,11 @@ def get_pi_top_plot(symbol, currency):
     
     # Set layout with black background
     fig.update_layout(
-        title=symbol + "Daily Prices with Moving Averages and Pi Cycle Top Indicator",
+        title=symbol + " Daily Prices with Moving Averages and Pi Cycle Top Indicator",
         xaxis=dict(title="Date"),
         yaxis=dict(title="Price", type="log"),
-        plot_bgcolor="#111111",
-        paper_bgcolor="#111111",
+        plot_bgcolor="rgba(17, 17, 17, 1)",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
     )
 

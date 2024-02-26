@@ -40,8 +40,8 @@ def get_s2f_plot(symbol, currency):
         title=symbol + ' Daily Prices vs Stock-to-Flow Modeled Price',
         xaxis=dict(title='Date'),
         yaxis=dict(title='Price',type='log'),
-        plot_bgcolor='#111111',
-        paper_bgcolor='#111111',
+        plot_bgcolor="rgba(17, 17, 17, 1)",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color='white')
     )
 

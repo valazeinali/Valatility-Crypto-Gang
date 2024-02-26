@@ -50,8 +50,8 @@ def get_z_score_plot(symbol, currency):
         xaxis=dict(title='Date'),
         yaxis=dict(title=symbol + ' Price ('+ currency + ')', side='left', type='log', tickfont=dict(color='orange')),  # Set log scale for Bitcoin price axis
         yaxis2=dict(title='Z-Score', overlaying='y', side='right', position=0.85, tickfont=dict(color='white')),
-        plot_bgcolor='#111111',
-        paper_bgcolor='#111111',
+        plot_bgcolor='rgba(17, 17, 17, 1)',
+        paper_bgcolor='rgba(0, 0, 0, 0)',
         font=dict(color='white'),
         xaxis_showgrid=False,  # Remove x-axis gridlines
         yaxis_showgrid=False,  # Remove y-axis gridlines

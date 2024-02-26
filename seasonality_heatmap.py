@@ -82,8 +82,8 @@ def get_seasonality_heatmap_plot(symbol, currency):
     fig.update_layout(
         title=symbol + " Monthly Returns (%) Heatmap",
         xaxis_nticks=12,
-        plot_bgcolor="#111111",
-        paper_bgcolor="#111111",
+        plot_bgcolor="rgba(17, 17, 17, 1)",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
     )
     return fig
@@ -98,3 +98,4 @@ if __name__ == "__main__":
   fig = get_seasonality_heatmap_plot(symbol, currency)
   
   fig.show()
+

@@ -1,4 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap");
+
 body {
   background-color: #111111;
+  background-image:  url(frame.png);
   margin: 0;
 }
+
+h1 {
+	transition: font-size 300ms ease-out;
+    font-size: 3vw;	
+	letter-spacing: 2px;
+    font-family: "Oswald", bold-sans-serif;
+	color: #fff;
+	background: -webkit-linear-gradient(45deg, #caffff, #ff8040 80%);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+
+
+
+.left_light_ball::before {
+  content: "";
+  border-radius: 197.5px 0px;
+  opacity: 0.4;
+  background: var(--yellow, #f1e728);
+  filter: blur(162px);
+  height: 35%;
+  width: 55%;
+  position: absolute;
+  top: -40%;
+  left: -66%;
+  transform: translate(50%, 50%);
+  z-index: -1;
+}
+
+/* Styling for a glowing button */
+button {
+  border: none;
+  margin: 25px 25px 25px 25px;
+  background: -webkit-linear-gradient(45deg, #f8ffca, #ffff80 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 10px 30px; /* Button padding */
+  font-size: 16px; /* Text size */
+  cursor: pointer; /* Cursor pointer */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #111111; /* Initial background color */
+  position: relative; /* Required for proper box-shadow application */
+  transition: background-color 0.4s, box-shadow 0.4s; /* Smooth transition for background and shadow */
+  outline: none; /* Remove default focus outline */
+
+}
+
+/* Styling for the glowing effect on hover */
+button:hover {
+  box-shadow: 0 0 2px #ff0; /* Enhanced yellow glow effect */
+  
+}
+
