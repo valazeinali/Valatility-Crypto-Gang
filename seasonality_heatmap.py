@@ -30,6 +30,7 @@ def get_seasonality_heatmap_plot(symbol, currency):
 
     # Create a DataFrame that shows year and month for each row
     data_monthly_returns_df = pd.DataFrame(data_monthly_returns)
+    data_monthly_returns_df.replace(np.inf, np.nan, inplace=True) # REPLACE ONE INF VALUE SET IN THE DF (IDK WHY IT IS HERE)
     data_monthly_returns_df["Year"] = data_monthly_returns_df.index.year
     data_monthly_returns_df["Month"] = data_monthly_returns_df.index.month
     data_monthly_returns_df["Returns"] = data_monthly_returns_df["Close"] * 100
@@ -39,15 +40,26 @@ def get_seasonality_heatmap_plot(symbol, currency):
         index="Year", columns="Month", values="Returns"
     )
 
+    
+
     # Generate hover text information
     hover_text = []
     for yi, yy in enumerate(seasonality_df.index):
         hover_text.append([])
         for xi, xx in enumerate(seasonality_df.columns):
             hover_text[-1].append(
-                f"Year: {yy}<br>Month: {month_names[xx]}<br>Return: {seasonality_df.values[yi][xi]}%"
+                f"Year: {yy}<br>Month: {month_names[xx]}<br>Return: {seasonality_df.values[yi][xi].round(1)}%"
             )
 
+    #Colorscale for heatmap values 
+    mid_point_value = 0 - data_monthly_returns_df["Returns"].min() / (data_monthly_returns_df["Returns"].max() - data_monthly_returns_df["Returns"].min())
+    colorscale = [
+        [0.0, 'rgb(229,31,31)'],  # lower bound color
+        [mid_point_value, 'rgb(247,227,121)'], #mid bound color
+        [mid_point_value + 0.01, 'rgb(169, 219, 68)'], #greener sooner because of huge % returns for some months
+        [1.0, 'rgb(68,206,27)']     # upper bound color
+    ]
+    
     # Use Plotly to create the heat map
     fig = go.Figure(
         data=go.Heatmap(
@@ -57,7 +69,7 @@ def get_seasonality_heatmap_plot(symbol, currency):
             text=hover_text,  # Apply hover text
             hoverinfo="text",  # Display the text on hover
             hoverongaps=False,
-            colorscale="Cividis",
+            colorscale=colorscale
         )
     )
 
@@ -69,10 +81,10 @@ def get_seasonality_heatmap_plot(symbol, currency):
             if not pd.isna(value):
                 fig.add_annotation(
                     dict(
-                        font=dict(color="white"),
+                        font=dict(color="black"),
                         x=month_names[month],
                         y=year,
-                        text=f"{value:.3}%",
+                        text=f"{value.round(1)}%",
                         showarrow=False,
                         xanchor="center",
                         yanchor="middle",
