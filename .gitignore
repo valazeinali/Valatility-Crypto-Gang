@@ -8,5 +8,10 @@
 .venv
 .vscode
 
-#Pycache
+# Pycache
 *.pyc
+__pycache__
+
+# cache
+.cache
+
