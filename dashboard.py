@@ -17,7 +17,11 @@ app.title = "Valatility Crypto Dashboard"
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'FileSystemCache',  # Simple caching strategy, suitable for development/testing
     'CACHE_DIR': 'cache',
+<<<<<<< HEAD
     'CACHE_DEFAULT_TIMEOUT': 3600  # 86,400 seconds == 24 hours
+=======
+    'CACHE_DEFAULT_TIMEOUT': 86400  # 86,400 seconds == 24 hours
+>>>>>>> fd64180 (Update dashboard.py)
 })
 
 # Define your color scheme
@@ -99,6 +103,7 @@ def send_layout():
                     }),
                 ]
             ),
+<<<<<<< HEAD
             html.Div(
                 children=[
                     dcc.Graph(id="Bitcoin MCPC", style={"width": "100%", "vertical-align": "middle"}, config={'displaylogo': False, 'scrollZoom':True, 'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape']},
@@ -114,6 +119,8 @@ def send_layout():
                     }),
                 ]
             ),
+=======
+>>>>>>> fd64180 (Update dashboard.py)
             html.Button('Update Data', id='update-data', n_clicks=0),
         ],
     )
@@ -131,8 +138,12 @@ def get_cached_data(func, symbol="BTC", currency="USD"):
     [Output("Bitcoin Pi Cycle Top", "figure"),
      Output("Bitcoin Seasonality Heatmap", "figure"),
      Output("Bitcoin S2F", "figure"),
+<<<<<<< HEAD
      Output("Bitcoin Z-Score", "figure"),
      Output("Bitcoin MCPC", "figure")],
+=======
+     Output("Bitcoin Z-Score", "figure")],
+>>>>>>> fd64180 (Update dashboard.py)
     [Input("update-data", "n_clicks")]
 )
 def update_graphs(n_clicks):
@@ -142,7 +153,10 @@ def update_graphs(n_clicks):
         cache.delete_memoized(get_cached_data, get_seasonality_heatmap_plot)
         cache.delete_memoized(get_cached_data, get_s2f_plot)
         cache.delete_memoized(get_cached_data, get_z_score_plot)
+<<<<<<< HEAD
         cache.delete_memoized(get_cached_data, get_mcpc_plot)
+=======
+>>>>>>> fd64180 (Update dashboard.py)
 
     # Fetch and return the updated data for each plot
     return (
