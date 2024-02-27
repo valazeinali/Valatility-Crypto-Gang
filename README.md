@@ -1,6 +1,6 @@
 # Valatility Crypto Top Ticking Dashboard ₿
 
-![Dashboard Image](https://github.com/valazeinali/Valatility-Crypto-Gang/assets/Valatility.png)
+![Dashboard Image](https://github.com/valazeinali/Valatility-Crypto-Gang/blob/main/assets/Valatility.png)
 
 # https://valatility.com
 Welcome to the Valatility Crypto Top Ticking Dashboard project. This repository is the central hub for collaboration among members of the Valatility #crypto channel. Our objective is to develop a comprehensive dashboard for cryptocurrency tick data, utilizing various algorithms and strategies to provide insightful analytics and forecasts.
