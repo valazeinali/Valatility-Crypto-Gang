@@ -6,7 +6,6 @@
 
 # Environments
 .venv
-.vscode
 
 # Pycache
 *.pyc

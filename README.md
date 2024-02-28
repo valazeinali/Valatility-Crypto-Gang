@@ -32,14 +32,27 @@ Before you begin, ensure you have met the following requirements:
    git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
     ```
     
-## Contributing
+## Contribution
 
 We welcome contributions from everyone. If you're interested in helping, please:
 1. Fork the repository.
-2. Create a new branch for your feature (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+2. Install a virtual environment: venv, poetry, pipenv or pyenv.
+3. Intall package dependencies:
+```commandline
+pip install -r requirements.txt
+```
+4. Create a new branch for your feature:
+```commandline
+git checkout -b feature/AmazingFeature
+```
+5. Commit your changes:
+```commandline
+git commit -m 'Add some AmazingFeature'
+```
+6. Push to the branch:
+```commandline
+git push origin feature/AmazingFeature
+```
 
 ## License
 
