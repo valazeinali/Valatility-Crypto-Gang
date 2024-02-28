@@ -27,10 +27,6 @@ echo "🚀 Deploying new feature!"
 # Example usage of the remote URL in the script
 echo "Pushing to remote named '$remote' at URL: $url\n"
 
-if [ "$url" != "https://github.com/valazeinali/Valatility-Crypto-Gang.git" ]; then
-    echo "❌ You are attempting to push to an unauthorized repository: $url"
-    exit 1
-fi
 
 # Fetch the latest changes from the remote main branch
 git fetch
