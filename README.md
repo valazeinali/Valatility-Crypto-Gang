@@ -31,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
    ```sh
    git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
     ```
-    
+
 ## Contribution
 
 We welcome contributions from everyone. If you're interested in helping, please:

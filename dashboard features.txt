@@ -6,27 +6,3 @@
 6) incorporate Moody dashboard https://bitcoin.clarkmoody.com/dashboard/
 7) RSI (test which time frame is best though) https://charts.bitbo.io/monthly-rsi/
 8) incorporate BiBo dashboard https://charts.bitbo.io/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

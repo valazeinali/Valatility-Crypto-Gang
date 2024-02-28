@@ -19,5 +19,5 @@
     "python.analysis.completeFunctionParens": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.createEnvironment.trigger": "off",
-    "pylint.lintOnChange": true, 
+    "pylint.lintOnChange": true,
 }

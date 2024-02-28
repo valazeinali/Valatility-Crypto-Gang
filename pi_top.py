@@ -2,22 +2,23 @@ import plotly.graph_objs as go
 from data.get_historical_data import get_historical_data
 import numpy as np
 
+
 def get_pi_top_plot(symbol, currency):
     data = get_historical_data(symbol, currency)
-    
+
     # Calculate moving averages
     data["111DMA"] = data["Close"].rolling(window=111).mean()
     data["350DMA*2"] = data["Close"].rolling(window=350).mean() * 2
-    
+
     # Calculate Pi Cycle Top Indicator
     data["PiTop"] = data[["111DMA", "350DMA*2"]].max(axis=1)
-    
+
     # Find where 111DMA > 350DMA * 2
     data["Highlight"] = data["111DMA"] > data["350DMA*2"]
-    
+
     # Create an interactive plotly graph
     fig = go.Figure()
-    
+
     # Add Bitcoin closing prices
     fig.add_trace(
         go.Scatter(
@@ -28,7 +29,7 @@ def get_pi_top_plot(symbol, currency):
             line=dict(color="orange"),
         )
     )
-    
+
     # Add moving averages
     fig.add_trace(
         go.Scatter(
@@ -48,10 +49,10 @@ def get_pi_top_plot(symbol, currency):
             line=dict(color="CYAN"),
         )
     )
-    
+
     # Add Pi Cycle Top Indicator
     # fig.add_trace(go.Scatter(x=data.index, y=data['PiTop'], mode='lines', name='Pi Cycle Top Indicator', line=dict(color='red')))
-    
+
     # Highlight areas where 111DMA > 350DMA * 2
     highlighted_dates = data[data["Highlight"]].index
     highlighted_prices = data[data["Highlight"]]["Close"]
@@ -64,7 +65,7 @@ def get_pi_top_plot(symbol, currency):
             name="111DMA > (350DMA * 2)",
         )
     )
-    
+
     # Set layout with black background
     fig.update_layout(
         title=symbol + "$ 1D with Moving Averages and Pi Cycle Top Indicator",
@@ -76,6 +77,7 @@ def get_pi_top_plot(symbol, currency):
         font=dict(color="white"),
     )
 
+<<<<<<< HEAD
     fig.update_layout(legend=dict(
         yanchor="top",
         y=0.99,
@@ -84,15 +86,16 @@ def get_pi_top_plot(symbol, currency):
     ))
 
 
+=======
+>>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
     return fig
 
 
-
 if __name__ == "__main__":
-  # Get all-time historical data from CryptoCompare API
-  symbol = 'BTC'
-  currency = 'USD'
-  
-  fig = get_pi_top_plot(symbol, currency)
-  
-  fig.show()
+    # Get all-time historical data from CryptoCompare API
+    symbol = "BTC"
+    currency = "USD"
+
+    fig = get_pi_top_plot(symbol, currency)
+
+    fig.show()
