@@ -25,7 +25,7 @@ url="$2"
 echo "🚀 Deploying new feature!"
 
 # Example usage of the remote URL in the script
-echo "Pushing to remote named '$remote' at URL: $url\n"
+echo "Pushing to URL: https://github.com/valazeinali/Valatility-Crypto-Gang.git\n"
 
 
 # Fetch the latest changes from the remote main branch
