@@ -75,6 +75,6 @@ do
 	fi
 done
 
-echo "💰💵 Operation completed successfully. Time to make some cash 💸💸"
+echo "💰💵 Operation completed successfully. Time to make some cash 💸💸\n"
 
 exit 0
