@@ -22,7 +22,7 @@
 remote="$1"
 url="$2"
 
-echo "🚀 Deploying new feature!"
+echo "🚀 Deploying new feature to Crypto Vala Gang ₿₿₿!"
 
 # Example usage of the remote URL in the script
 echo "Pushing to URL: https://github.com/valazeinali/Valatility-Crypto-Gang.git\n"
@@ -75,6 +75,9 @@ do
 	fi
 done
 
-echo "💰💵 Operation completed successfully. Time to make some cash 💸💸\n"
-
+echo "💵💵💵💵💵💵"
+echo "💵💵💵💵💵💵"
+echo "💰💰 Operation completed successfully. Time to make some cash 💸💸\n"
+echo "💵💵💵💵💵💵"
+echo "💵💵💵💵💵💵"
 exit 0
