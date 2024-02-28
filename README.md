@@ -54,6 +54,27 @@ git commit -m 'Add some AmazingFeature'
 git push origin feature/AmazingFeature
 ```
 
+## Setting Up Pre-commit and Git Hooks
+
+This project uses `pre-commit` to manage Git hooks. To set up these hooks on your local machine:
+
+1. Install `pre-commit`. It requires Python and can be installed via pip:
+```commandline
+pip install pre-commit
+```
+2. Install the Git hook scripts:
+```commandline
+pre-commit install
+```
+3. Optionally, run `pre-commit` against all the files to ensure everything is formatted properly:
+```commandline
+pre-commit run --all-files
+```
+By following these steps, `pre-commit` will automatically run the configured hooks on every commit.
+4. Setting git hooks on your local:
+```commandline
+bash install_hooks.sh
+```
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
