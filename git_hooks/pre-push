@@ -22,23 +22,32 @@
 remote="$1"
 url="$2"
 
+echo "🚀 Deploying new feature!"
+
+# Example usage of the remote URL in the script
+echo "Pushing to remote named '$remote' at URL: $url\n"
+
+if [ "$url" != "https://github.com/valazeinali/Valatility-Crypto-Gang.git" ]; then
+    echo "❌ You are attempting to push to an unauthorized repository: $url"
+    exit 1
+fi
 
 # Fetch the latest changes from the remote main branch
 git fetch
 
 # Check if your local branch is behind the remote main branch
 if git log HEAD..origin/main --oneline | grep -q .; then
-  echo "Your branch is behind origin/main. Consider pulling the latest changes before pushing."
+  echo "❌ Your branch is behind origin/main. Consider pulling the latest changes before pushing."
   exit 1 # Prevents the push
 else
-  echo "Your branch is up-to-date with origin/main."
+  echo "✅ Your branch is up-to-date with origin/main.\n"
 fi
 
 
 # Check if the local main branch is behind the remote main branch
 # Adjust "origin" and "main" as necessary for your remote and branch names
 if git fetch --quiet && [ $(git rev-list --count main..origin/main) -gt 0 ]; then
-    echo >&2 "Your local main branch is behind the remote main branch. Please pull the latest changes before pushing."
+    echo >&2 "❌ Your local main branch is behind the remote main branch. Please pull the latest changes before pushing."
     exit 1
 fi
 
@@ -69,5 +78,7 @@ do
 		fi
 	fi
 done
+
+echo "💰💵 Operation completed successfully. Time to make some cash 💸💸"
 
 exit 0
