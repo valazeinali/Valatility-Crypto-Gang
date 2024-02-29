@@ -37,7 +37,8 @@ def get_s2f_plot(symbol, currency):
     
     # Set layout with black background
     fig.update_layout(
-        title=symbol + ' Daily Prices vs Stock-to-Flow Modeled Price',
+        title=symbol + '$ 1D vs Stock-to-Flow Modeled Price',
+        title_x=0.5,
         xaxis=dict(title='Date'),
         yaxis=dict(title='Price',type='log'),
         plot_bgcolor="rgba(17, 17, 17, 1)",
@@ -45,6 +46,12 @@ def get_s2f_plot(symbol, currency):
         font=dict(color='white')
     )
 
+    fig.update_layout(legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
 
     return fig
 

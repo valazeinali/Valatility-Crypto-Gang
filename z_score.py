@@ -46,7 +46,8 @@ def get_z_score_plot(symbol, currency):
     
     # Update layout
     fig.update_layout(
-        title='Z-Score Analysis for ' + symbol + ' Price',
+        title='Z-Score Analysis for ' + symbol + '$ 1D',
+        title_x=0.5,
         xaxis=dict(title='Date'),
         yaxis=dict(title=symbol + ' Price ('+ currency + ')', side='left', type='log', tickfont=dict(color='orange')),  # Set log scale for Bitcoin price axis
         yaxis2=dict(title='Z-Score', overlaying='y', side='right', position=0.85, tickfont=dict(color='white')),
@@ -57,6 +58,13 @@ def get_z_score_plot(symbol, currency):
         yaxis_showgrid=False,  # Remove y-axis gridlines
         yaxis2_showgrid=False  # Remove y-axis gridlines for Z-score axis
     )
+
+    fig.update_layout(legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
 
     return fig
 

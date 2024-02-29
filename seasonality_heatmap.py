@@ -92,15 +92,16 @@ def get_seasonality_heatmap_plot(symbol, currency):
                 )
 
     fig.update_layout(
-        title=symbol + " Monthly Returns (%) Heatmap",
+        title=symbol + "$ 1D Monthly Returns (%) Heatmap",
+        title_x=0.5,
+        margin=dict(l=0, r=0, t=20, b=20),
         xaxis_nticks=12,
         plot_bgcolor="rgba(17, 17, 17, 1)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
-    )
+        )
+    fig.update_traces(colorbar_orientation='h')
     return fig
-
-
 
 if __name__ == "__main__":
   # Get all-time historical data from CryptoCompare API
