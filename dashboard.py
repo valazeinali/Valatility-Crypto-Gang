@@ -232,4 +232,3 @@ def update_graphs(n_clicks):
 if __name__ == "__main__":
 
     app.run_server(port=1333)
-sads
