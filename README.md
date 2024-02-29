@@ -58,7 +58,7 @@ git push origin feature/AmazingFeature
 
 This project uses `pre-commit` to manage Git hooks. To set up these hooks on your local machine:
 
-1. Install `pre-commit`. It requires Python and can be installed via pip:
+1. Install `pre-commit`. It requires Python and can be installed via pip, (this should be done automatically from step 3 of Contribution)
 ```commandline
 pip install pre-commit
 ```
