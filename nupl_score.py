@@ -4,128 +4,83 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
-
-
-# Define function to fetch historical market data from CoinGecko
-def get_historical_data(start_date, end_date):
-    url = f"https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from={start_date}&to={end_date}"
-    response = requests.get(url)
-    data = response.json()
-    prices = data["prices"]
-    dates = [pd.to_datetime(x[0], unit="ms") for x in prices]
-    prices = [x[1] for x in prices]
-    return pd.DataFrame({"Date": dates, "Price": prices})
-
+from data.get_historical_data import get_historical_data
 
 # Calculate Realized Value (Simple Moving Average)
-def calculate_realized_value(prices, window=180):
-    return prices.rolling(window=window).mean()
-
+def calculate_realized_value(Closes, window=180):
+    return Closes.rolling(window=window).mean()
 
 # Calculate Unrealized Profit/Loss (UPL)
-def calculate_upl(prices, realized_value):
-    return prices - realized_value
-
+def calculate_upl(Closes, realized_value):
+    return Closes - realized_value
 
 # Calculate NUPL indicator
-def calculate_nupl(upl, prices):
-    return (upl / prices) * 100  # Multiply by 100 to represent as percentage
-
+def calculate_nupl(upl, Closes):
+    return (upl / Closes) * 100  # Multiply by 100 to represent as percentage
 
 # Calculate Z-score
 def calculate_z_score(data):
     return (data - data.mean()) / data.std()
 
+def get_nupl_score(symbol,currency):
+    # Fetch historical market data for Bitcoin
+    data = get_historical_data(symbol, currency)
 
-# Define start and end dates for data retrieval
-start_date = "1293840000"  # 2011-01-01 in Unix timestamp
-end_date = str(int(datetime.now().timestamp()))
+    # Calculate Realized Value (Simple Moving Average)
+    data['Realized_Value'] = calculate_realized_value(data['Close'])
 
-# Fetch historical market data for Bitcoin
-bitcoin_data = get_historical_data(start_date, end_date)
+    # Calculate Unrealized Profit/Loss (UPL)
+    data['UPL'] = calculate_upl(data['Close'], data['Realized_Value'])
 
-# Calculate Realized Value (Simple Moving Average)
-bitcoin_data["Realized_Value"] = calculate_realized_value(bitcoin_data["Price"])
+    # Calculate NUPL indicator
+    data['NUPL'] = calculate_nupl(data['UPL'], data['Close'])
 
-# Calculate Unrealized Profit/Loss (UPL)
-bitcoin_data["UPL"] = calculate_upl(
-    bitcoin_data["Price"], bitcoin_data["Realized_Value"]
-)
+    # Calculate Z-score for NUPL
+    data['NUPL_Z_Score'] = calculate_z_score(data['NUPL'])
 
-# Calculate NUPL indicator
-bitcoin_data["NUPL"] = calculate_nupl(bitcoin_data["UPL"], bitcoin_data["Price"])
+    # Create subplots with shared x-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-# Calculate Z-score for NUPL
-bitcoin_data["NUPL_Z_Score"] = calculate_z_score(bitcoin_data["NUPL"])
+    # Add trace for Z-scored NUPL indicator
+    fig.add_trace(go.Scatter(x=data['Date'], y=data['NUPL_Z_Score'], mode='lines', name='NUPL (Z-Score)', line=dict(color='white')), secondary_y=False)
 
-# Create subplots with shared x-axis
-fig = make_subplots(specs=[[{"secondary_y": True}]])
+    # Add trace for Bitcoin Close
+    fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], mode='lines', name='Bitcoin Close', line=dict(color='orange')), secondary_y=True)
 
-# Add trace for Z-scored NUPL indicator
-fig.add_trace(
-    go.Scatter(
-        x=bitcoin_data["Date"],
-        y=bitcoin_data["NUPL_Z_Score"],
-        mode="lines",
-        name="NUPL (Z-Score)",
-        line=dict(color="white"),
-    ),
-    secondary_y=False,
-)
+    # Add neon green line at -3 on NUPL axis
+    fig.add_shape(type="line", x0=data['Date'].iloc[0], y0=-3, x1=data['Date'].iloc[-1], y1=-3,
+                line=dict(color="lime", width=2, dash='dashdot'), secondary_y=False)
 
-# Add trace for Bitcoin price
-fig.add_trace(
-    go.Scatter(
-        x=bitcoin_data["Date"],
-        y=bitcoin_data["Price"],
-        mode="lines",
-        name="Bitcoin Price",
-        line=dict(color="orange"),
-    ),
-    secondary_y=True,
-)
+    # Add neon red line at 2 on NUPL axis
+    fig.add_shape(type="line", x0=data['Date'].iloc[0], y0=2, x1=data['Date'].iloc[-1], y1=2,
+                line=dict(color="red", width=2, dash='dashdot'), secondary_y=False)
 
-# Add neon green line at -3 on NUPL axis
-fig.add_shape(
-    type="line",
-    x0=bitcoin_data["Date"].iloc[0],
-    y0=-3,
-    x1=bitcoin_data["Date"].iloc[-1],
-    y1=-3,
-    line=dict(color="lime", width=2, dash="dashdot"),
-    secondary_y=False,
-)
+    # Update layout
+    fig.update_layout(
+        title_text='Bitcoin Relative Unrealized Profit/Loss (NUPL) Indicator with Close',
+        xaxis_title='Date',
+        font=dict(family='Arial, sans-serif', color='white'),  # Set text color to white
+        plot_bgcolor='black',  # Set background color to black
+        paper_bgcolor='black',  # Set paper color to black
+        legend=dict(font=dict(color='white')),  # Set legend text color to white
+        hovermode='x unified'
+    )
 
-# Add neon red line at 2 on NUPL axis
-fig.add_shape(
-    type="line",
-    x0=bitcoin_data["Date"].iloc[0],
-    y0=2,
-    x1=bitcoin_data["Date"].iloc[-1],
-    y1=2,
-    line=dict(color="red", width=2, dash="dashdot"),
-    secondary_y=False,
-)
+    # Update y-axis properties to remove gridlines
+    fig.update_yaxes(showgrid=False, secondary_y=False)
+    fig.update_yaxes(showgrid=False, secondary_y=True)
 
-# Update layout
-fig.update_layout(
-    title_text="Bitcoin Relative Unrealized Profit/Loss (NUPL) Indicator with Price",
-    xaxis_title="Date",
-    font=dict(family="Arial, sans-serif", color="white"),  # Set text color to white
-    plot_bgcolor="black",  # Set background color to black
-    paper_bgcolor="black",  # Set paper color to black
-    legend=dict(font=dict(color="white")),  # Set legend text color to white
-    hovermode="x unified",
-)
+    # Update y-axis properties
+    fig.update_yaxes(title_text="NUPL (Z-Score)", color='white', secondary_y=False)
+    fig.update_yaxes(title_text="Bitcoin Close (USD)", color='orange', type='log', secondary_y=True)
 
-# Update y-axis properties to remove gridlines
-fig.update_yaxes(showgrid=False, secondary_y=False)
-fig.update_yaxes(showgrid=False, secondary_y=True)
+    return fig
 
-# Update y-axis properties
-fig.update_yaxes(title_text="NUPL (Z-Score)", color="white", secondary_y=False)
-fig.update_yaxes(
-    title_text="Bitcoin Price (USD)", color="orange", type="log", secondary_y=True
-)
+if __name__ == "__main__":
+    # Get all-time historical data from CryptoCompare API
+    symbol = "BTC"
+    currency = "USD"
 
-fig.show()
+    fig = get_nupl_score(symbol, currency)
+
+    fig.show()
