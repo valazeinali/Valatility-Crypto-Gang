@@ -70,13 +70,13 @@ def get_nupl_score_plot(symbol, currency):
         secondary_y=True,
     )
 
-    # Add neon green line at -3 on NUPL axis
+    # Add neon green line at -2 on NUPL axis
     fig.add_shape(
         type="line",
         x0=data.index[0],
-        y0=-3,
+        y0=-2,
         x1=data.index[-1],
-        y1=-3,
+        y1=-2,
         line=dict(color="lime", width=2, dash="dashdot"),
         secondary_y=False,
     )
