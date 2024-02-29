@@ -2,6 +2,8 @@ import plotly.graph_objs as go
 from data.get_historical_data import get_historical_data
 import numpy as np
 import pandas as pd
+
+
 def get_seasonality_heatmap_plot(symbol, currency):
 
     # Define a dictionary to map month numbers to names
@@ -21,16 +23,17 @@ def get_seasonality_heatmap_plot(symbol, currency):
     }
 
     # Get all-time historical data from CryptoCompare API
-    
+
     data = get_historical_data(symbol, currency)
-    
 
     # Convert the daily prices to monthly returns
     data_monthly_returns = data["Close"].resample("M").ffill().pct_change()
 
     # Create a DataFrame that shows year and month for each row
     data_monthly_returns_df = pd.DataFrame(data_monthly_returns)
-    data_monthly_returns_df.replace(np.inf, np.nan, inplace=True) # REPLACE ONE INF VALUE SET IN THE DF (IDK WHY IT IS HERE)
+    data_monthly_returns_df.replace(
+        np.inf, np.nan, inplace=True
+    )  # REPLACE ONE INF VALUE SET IN THE DF (IDK WHY IT IS HERE)
     data_monthly_returns_df["Year"] = data_monthly_returns_df.index.year
     data_monthly_returns_df["Month"] = data_monthly_returns_df.index.month
     data_monthly_returns_df["Returns"] = data_monthly_returns_df["Close"] * 100
@@ -39,8 +42,6 @@ def get_seasonality_heatmap_plot(symbol, currency):
     seasonality_df = data_monthly_returns_df.pivot(
         index="Year", columns="Month", values="Returns"
     )
-
-    
 
     # Generate hover text information
     hover_text = []
@@ -51,15 +52,21 @@ def get_seasonality_heatmap_plot(symbol, currency):
                 f"Year: {yy}<br>Month: {month_names[xx]}<br>Return: {seasonality_df.values[yi][xi].round(1)}%"
             )
 
-    #Colorscale for heatmap values 
-    mid_point_value = 0 - data_monthly_returns_df["Returns"].min() / (data_monthly_returns_df["Returns"].max() - data_monthly_returns_df["Returns"].min())
+    # Colorscale for heatmap values
+    mid_point_value = 0 - data_monthly_returns_df["Returns"].min() / (
+        data_monthly_returns_df["Returns"].max()
+        - data_monthly_returns_df["Returns"].min()
+    )
     colorscale = [
-        [0.0, 'rgb(229,31,31)'],  # lower bound color
-        [mid_point_value, 'rgb(247,227,121)'], #mid bound color
-        [mid_point_value + 0.01, 'rgb(169, 219, 68)'], #greener sooner because of huge % returns for some months
-        [1.0, 'rgb(68,206,27)']     # upper bound color
+        [0.0, "rgb(229,31,31)"],  # lower bound color
+        [mid_point_value, "rgb(247,227,121)"],  # mid bound color
+        [
+            mid_point_value + 0.01,
+            "rgb(169, 219, 68)",
+        ],  # greener sooner because of huge % returns for some months
+        [1.0, "rgb(68,206,27)"],  # upper bound color
     ]
-    
+
     # Use Plotly to create the heat map
     fig = go.Figure(
         data=go.Heatmap(
@@ -69,7 +76,7 @@ def get_seasonality_heatmap_plot(symbol, currency):
             text=hover_text,  # Apply hover text
             hoverinfo="text",  # Display the text on hover
             hoverongaps=False,
-            colorscale=colorscale
+            colorscale=colorscale,
         )
     )
 
@@ -103,12 +110,15 @@ def get_seasonality_heatmap_plot(symbol, currency):
     fig.update_traces(colorbar_orientation='h')
     return fig
 
-if __name__ == "__main__":
-  # Get all-time historical data from CryptoCompare API
-  symbol = 'BTC'
-  currency = 'USD'
-  
-  fig = get_seasonality_heatmap_plot(symbol, currency)
-  
-  fig.show()
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
+if __name__ == "__main__":
+    # Get all-time historical data from CryptoCompare API
+    symbol = "BTC"
+    currency = "USD"
+
+    fig = get_seasonality_heatmap_plot(symbol, currency)
+
+    fig.show()

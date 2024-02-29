@@ -8,7 +8,7 @@ body {
 
 h1 {
 	transition: font-size 300ms ease-out;
-    font-size: 3vw;	
+    font-size: 3vw;
 	letter-spacing: 2px;
     font-family: "Oswald", bold-sans-serif;
 	color: #fff;
@@ -55,6 +55,5 @@ button {
 /* Styling for the glowing effect on hover */
 button:hover {
   box-shadow: 0 0 2px #ff0; /* Enhanced yellow glow effect */
-  
-}
 
+}

@@ -1,7 +1,8 @@
 # Valatility Crypto Top Ticking Dashboard ₿
 
-![Dashboard Image](https://github.com/valazeinali/Valatility-Crypto-Gang/assets/32586254/73fe1e10-e12a-4704-a376-3a9d49276955)
+![Dashboard Image](https://github.com/valazeinali/Valatility-Crypto-Gang/blob/main/assets/Valatility.png)
 
+# https://valatility.com
 Welcome to the Valatility Crypto Top Ticking Dashboard project. This repository is the central hub for collaboration among members of the Valatility #crypto channel. Our objective is to develop a comprehensive dashboard for cryptocurrency tick data, utilizing various algorithms and strategies to provide insightful analytics and forecasts.
 
 ## Project Objective
@@ -30,16 +31,50 @@ Before you begin, ensure you have met the following requirements:
    ```sh
    git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
     ```
-    
-## Contributing
+
+## Contribution
 
 We welcome contributions from everyone. If you're interested in helping, please:
 1. Fork the repository.
-2. Create a new branch for your feature (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+2. Install a virtual environment: venv, poetry, pipenv or pyenv.
+3. Intall package dependencies:
+```commandline
+pip install -r requirements.txt
+```
+4. Create a new branch for your feature:
+```commandline
+git checkout -b feature/AmazingFeature
+```
+5. Commit your changes:
+```commandline
+git commit -m 'Add some AmazingFeature'
+```
+6. Push to the branch:
+```commandline
+git push origin feature/AmazingFeature
+```
 
+## Setting Up Pre-commit and Git Hooks
+
+This project uses `pre-commit` to manage Git hooks. To set up these hooks on your local machine:
+
+1. Install `pre-commit`. It requires Python and can be installed via pip:
+```commandline
+pip install pre-commit
+```
+2. Install the Git hook scripts:
+```commandline
+pre-commit install
+```
+3. Optionally, run `pre-commit` against all the files to ensure everything is formatted properly:
+```commandline
+pre-commit run --all-files
+```
+By following these steps, `pre-commit` will automatically run the configured hooks on every commit.
+4. Setting git hooks on your local:
+```commandline
+bash install_hooks.sh
+```
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.

@@ -1,0 +1,23 @@
+{
+    "workbench.colorTheme": "Default Dark Modern",
+    "notebook.formatOnSave.enabled": true,
+    "notebook.formatOnCellExecution": true,
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "notebook.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "editor.defaultFoldingRangeProvider": "ms-python.black-formatter",
+    "python.analysis.autoFormatStrings": true,
+    "python.analysis.addImport.exactMatchOnly": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.createEnvironment.trigger": "off",
+    "pylint.lintOnChange": true,
+}
