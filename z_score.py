@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+
 from data.get_historical_data import get_historical_data
 
 
@@ -66,17 +67,8 @@ def get_z_score_plot(symbol, currency):
 
     # Update layout
     fig.update_layout(
-<<<<<<< HEAD
-        title='Z-Score Analysis for ' + symbol + '$ 1D',
+        title="Z-Score Analysis for " + symbol + "$ 1D",
         title_x=0.5,
-        xaxis=dict(title='Date'),
-        yaxis=dict(title=symbol + ' Price ('+ currency + ')', side='left', type='log', tickfont=dict(color='orange')),  # Set log scale for Bitcoin price axis
-        yaxis2=dict(title='Z-Score', overlaying='y', side='right', position=0.85, tickfont=dict(color='white')),
-        plot_bgcolor='rgba(17, 17, 17, 1)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        font=dict(color='white'),
-=======
-        title="Z-Score Analysis for " + symbol + " Price",
         xaxis=dict(title="Date"),
         yaxis=dict(
             title=symbol + " Price (" + currency + ")",
@@ -94,18 +86,12 @@ def get_z_score_plot(symbol, currency):
         plot_bgcolor="rgba(17, 17, 17, 1)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
->>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
         xaxis_showgrid=False,  # Remove x-axis gridlines
         yaxis_showgrid=False,  # Remove y-axis gridlines
         yaxis2_showgrid=False,  # Remove y-axis gridlines for Z-score axis
     )
 
-    fig.update_layout(legend=dict(
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=0.01
-    ))
+    fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
 
     return fig
 

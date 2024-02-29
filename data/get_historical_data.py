@@ -11,104 +11,80 @@ def get_historical_data(symbol, currency):
     def get_data(symbol, currency, last_date=None):
 
         all_time_data = []
-
-        # Make request to CryptoCompare API
         url = "https://min-api.cryptocompare.com/data/v2/histoday"
+
+        end_date = datetime.utcnow()
+
         if last_date is None:
-            parameters = {
-                "fsym": symbol,
-                "tsym": currency,
-                "allData": "true",
-            }
+            parameters = {"fsym": symbol, "tsym": currency, "allData": "true"}
         else:
             parameters = {
                 "fsym": symbol,
                 "tsym": currency,
-                "toTs": int(datetime.now().timestamp()),
-                "limit": 2000,
+                "toTs": int(end_date.timestamp()),
+                "limit": "2000",
             }
+
         response = requests.get(url, params=parameters)
         data = response.json()
 
-        # Extract daily close prices
         for entry in data["Data"]["Data"]:
             date = datetime.utcfromtimestamp(entry["time"]).strftime("%Y-%m-%d")
-            open_price = entry["open"]
-            high_price = entry["high"]
-            low_price = entry["low"]
-            close_price = entry["close"]
-            volume = entry["volumefrom"]
+            open_price, high_price, low_price, close_price, volume = (
+                entry["open"],
+                entry["high"],
+                entry["low"],
+                entry["close"],
+                entry["volumefrom"],
+            )
             all_time_data.append(
                 [date, open_price, high_price, low_price, close_price, volume]
             )
         return all_time_data
-
-    # except Exception as e:
-    #     print("An historical data error occurred:", e)
-    #     return None
 
     filename = f"{symbol}_{currency}_data.parquet"
 
     if os.path.exists(filename):
         df = pd.read_parquet(filename)
 
-        # Get the current date and time
-        time_now = datetime.now().strftime("%Y-%m-%d")
+        # Ensure the df's index is correctly set to UTC
+        if (
+            df.index.tzinfo is not None
+            and df.index.tzinfo.utcoffset(df.index[0]) is not None
+        ):
+            df.index = df.index.tz_convert("UTC")
+        else:
+            df.index = df.index.tz_localize("UTC")
 
         last_date = df.index[-1]
         time_now = pd.to_datetime(datetime.utcnow(), utc=True)
 
-        if last_date.strftime("%Y-%m-%d") == time_now:
+        if last_date.strftime("%Y-%m-%d") == time_now.strftime("%Y-%m-%d"):
             return df
         else:
-
             # Get the new data
-            new_data = get_data(symbol, currency, last_date)
-            # Convert the new data to a DataFrame
+            new_df = get_data(symbol, currency, last_date)
             new_df = pd.DataFrame(
-                new_data, columns=["Date", "Open", "High", "Low", "Close", "Volume"]
+                new_df, columns=["Date", "Open", "High", "Low", "Close", "Volume"]
             )
-
-            # Concatenate the new data with the old data
-            new_df["Date"] = pd.to_datetime(new_df["Date"])
-
-            new_df = new_df.set_index("Date")  # Set Date column as index
-
-            # Format the index as strings with the desired format
-            new_df.index = new_df.index.strftime("%Y-%m-%d")
-
-            new_df.index = pd.to_datetime(new_df.index)
-
+            new_df["Date"] = pd.to_datetime(new_df["Date"], utc=True)
+            new_df.set_index("Date", inplace=True)
+            # Append the new data to the existing data
             df = pd.concat([df, new_df]).sort_index()
             df = df[~df.index.duplicated(keep="last")]
             # Save the updated data to the parquet file
             df.to_parquet(filename)
 
             return df
-
     else:
         all_time_data = get_data(symbol, currency)
-
         df = pd.DataFrame(
             all_time_data, columns=["Date", "Open", "High", "Low", "Close", "Volume"]
         )
-        df["Date"] = pd.to_datetime(
-            df["Date"], utc=True
-        )  # Convert Date column to datetime type
-        df = df.set_index("Date")  # Set Date column as index
-        df = df[~df.index.duplicated(keep="last")]
-        df = df.loc[~(df == 0.0).all(axis=1)]
+        df["Date"] = pd.to_datetime(df["Date"], utc=True)
+        df.set_index("Date", inplace=True)
         df.to_parquet(filename)
     return df
-
-    #         return df
-    # else:
-    #      all_time_data = get_data(symbol, currency)
-    #      df = pd.DataFrame(all_time_data, columns=['Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
-    #      df['Date'] = pd.to_datetime(df['Date'], utc=True)
-    #      df.set_index("Date", inplace=True)
-    #      df.to_parquet(filename)
-    # return df
 
 
 def get_coinmetrics_data(symbol):
@@ -162,7 +138,6 @@ def get_coinmetrics_data(symbol):
                     "DiffMean": "float",
                 }
             )
-
             return data
         except Exception as e:
             print("An coinmetrics error occurred:", e)
@@ -177,7 +152,6 @@ def get_coinmetrics_data(symbol):
         time_now = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
         last_date = df.index[-1]
-
         if last_date.strftime("%Y-%m-%d") == time_now:
             return df
         else:
@@ -204,10 +178,11 @@ def get_coinmetrics_data(symbol):
         return df
 
 
+# Example usage
 # symbol = "BTC"
 # currency = "USD"
+# historical_data_df = get_historical_data(symbol, currency)
+# coinmetrics_data_df = get_coinmetrics_data(symbol)
 
-# df = get_historical_data(symbol, currency)
-# df = get_coinmetrics_data(symbol)
-
-# display(df)
+# print(historical_data_df)
+# (coinmetrics_data_df)

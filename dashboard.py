@@ -19,9 +19,10 @@ cache = Cache(
     config={
         "CACHE_TYPE": "FileSystemCache",  # Simple caching strategy, suitable for development/testing
         "CACHE_DIR": "cache",
-        "CACHE_DEFAULT_TIMEOUT": 86400,  # 86,400 seconds == 24 hours
+        "CACHE_DEFAULT_TIMEOUT": 3600,  # 86,400 seconds == 24 hours
     },
 )
+
 # Define your color scheme
 colors = {
     "main-background": "#111111",
@@ -180,9 +181,9 @@ def send_layout():
                             }
                         },
                     ),
-                    html.Button("Update Data", id="update-data", n_clicks=0),
                 ]
             ),
+            html.Button("Update Data", id="update-data", n_clicks=0),
         ],
     )
 
@@ -205,7 +206,7 @@ def get_cached_data(func, symbol="BTC", currency="USD"):
         Output("Bitcoin S2F", "figure"),
         Output("Bitcoin Z-Score", "figure"),
         Output("Bitcoin MCPC", "figure"),
-    ],  # Assuming you want to keep this output as well
+    ],
     [Input("update-data", "n_clicks")],
 )
 def update_graphs(n_clicks):

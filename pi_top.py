@@ -1,6 +1,7 @@
-import plotly.graph_objs as go
-from data.get_historical_data import get_historical_data
 import numpy as np
+import plotly.graph_objs as go
+
+from data.get_historical_data import get_historical_data
 
 
 def get_pi_top_plot(symbol, currency):
@@ -77,17 +78,8 @@ def get_pi_top_plot(symbol, currency):
         font=dict(color="white"),
     )
 
-<<<<<<< HEAD
-    fig.update_layout(legend=dict(
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=0.01
-    ))
+    fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
 
-
-=======
->>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
     return fig
 
 

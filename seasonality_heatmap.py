@@ -1,11 +1,11 @@
-import plotly.graph_objs as go
-from data.get_historical_data import get_historical_data
 import numpy as np
 import pandas as pd
+import plotly.graph_objs as go
+
+from data.get_historical_data import get_historical_data
 
 
 def get_seasonality_heatmap_plot(symbol, currency):
-
     # Define a dictionary to map month numbers to names
     month_names = {
         1: "Jan",
@@ -21,14 +21,12 @@ def get_seasonality_heatmap_plot(symbol, currency):
         11: "Nov",
         12: "Dec",
     }
-
     # Get all-time historical data from CryptoCompare API
 
     data = get_historical_data(symbol, currency)
 
     # Convert the daily prices to monthly returns
     data_monthly_returns = data["Close"].resample("M").ffill().pct_change()
-
     # Create a DataFrame that shows year and month for each row
     data_monthly_returns_df = pd.DataFrame(data_monthly_returns)
     data_monthly_returns_df.replace(
@@ -37,7 +35,6 @@ def get_seasonality_heatmap_plot(symbol, currency):
     data_monthly_returns_df["Year"] = data_monthly_returns_df.index.year
     data_monthly_returns_df["Month"] = data_monthly_returns_df.index.month
     data_monthly_returns_df["Returns"] = data_monthly_returns_df["Close"] * 100
-
     # Pivot the DataFrame to have years as rows, months as columns, and returns as values
     seasonality_df = data_monthly_returns_df.pivot(
         index="Year", columns="Month", values="Returns"
@@ -51,7 +48,6 @@ def get_seasonality_heatmap_plot(symbol, currency):
             hover_text[-1].append(
                 f"Year: {yy}<br>Month: {month_names[xx]}<br>Return: {seasonality_df.values[yi][xi].round(1)}%"
             )
-
     # Colorscale for heatmap values
     mid_point_value = 0 - data_monthly_returns_df["Returns"].min() / (
         data_monthly_returns_df["Returns"].max()
@@ -79,7 +75,6 @@ def get_seasonality_heatmap_plot(symbol, currency):
             colorscale=colorscale,
         )
     )
-
     # Add annotations
     for y, year in enumerate(seasonality_df.index):
         for m, month in enumerate(seasonality_df.columns):
@@ -106,14 +101,11 @@ def get_seasonality_heatmap_plot(symbol, currency):
         plot_bgcolor="rgba(17, 17, 17, 1)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
-        )
-    fig.update_traces(colorbar_orientation='h')
+    )
+    fig.update_traces(colorbar_orientation="h")
     return fig
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
 if __name__ == "__main__":
     # Get all-time historical data from CryptoCompare API
     symbol = "BTC"

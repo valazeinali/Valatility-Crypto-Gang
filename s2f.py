@@ -1,9 +1,10 @@
-import plotly.graph_objs as go
-from data.get_historical_data import (
-    get_historical_data,
-    get_coinmetrics_data,
-)  # feel free to comment this back in and comment the one below out
 import numpy as np
+import plotly.graph_objs as go
+
+from data.get_historical_data import (  # feel free to comment this back in and comment the one below out
+    get_coinmetrics_data,
+    get_historical_data,
+)
 
 
 def get_s2f_plot(symbol, currency):
@@ -27,35 +28,10 @@ def get_s2f_plot(symbol, currency):
 
     # Get all-time historical data from CryptoCompare API
     hdata = get_historical_data(symbol, currency)
-
     # Create an interactive plotly graph
     fig = go.Figure()
 
     # Add Bitcoin closing prices
-<<<<<<< HEAD
-    fig.add_trace(go.Scatter(x=hdata.index, y=hdata['Close'], mode='lines', name=symbol + ' Close Price',line=dict(color='orange')))
-    
-    # Add s2f model
-    fig.add_trace(go.Scatter(x=data.index, y=data['Model '+ symbol +' Price'], mode='lines', name='s2f model', line=dict(color='CYAN')))
-    
-    # Set layout with black background
-    fig.update_layout(
-        title=symbol + '$ 1D vs Stock-to-Flow Modeled Price',
-        title_x=0.5,
-        xaxis=dict(title='Date'),
-        yaxis=dict(title='Price',type='log'),
-        plot_bgcolor="rgba(17, 17, 17, 1)",
-        paper_bgcolor="rgba(0, 0, 0, 0)",
-        font=dict(color='white')
-    )
-
-    fig.update_layout(legend=dict(
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=0.01
-    ))
-=======
     fig.add_trace(
         go.Scatter(
             x=hdata.index,
@@ -79,14 +55,16 @@ def get_s2f_plot(symbol, currency):
 
     # Set layout with black background
     fig.update_layout(
-        title=symbol + " Daily Prices vs Stock-to-Flow Modeled Price",
+        title=symbol + "$ 1D vs Stock-to-Flow Modeled Price",
+        title_x=0.5,
         xaxis=dict(title="Date"),
         yaxis=dict(title="Price", type="log"),
         plot_bgcolor="rgba(17, 17, 17, 1)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
     )
->>>>>>> 5de1578 (Add shared pre-push hook script and formatted files)
+
+    fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
 
     return fig
 
