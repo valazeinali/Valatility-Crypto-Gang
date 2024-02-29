@@ -5,4 +5,4 @@
 5) stock 2 flow model https://charts.bitbo.io/stock-to-flow/ DONE
 6) NUPL indicator DONE
 7) google trends indicator
-8) rainbow chart 
+8) rainbow chart

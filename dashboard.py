@@ -8,6 +8,7 @@ from s2f import get_s2f_plot
 from seasonality_heatmap import get_seasonality_heatmap_plot
 from z_score import get_z_score_plot
 from nupl_score import get_nupl_score_plot
+
 # Initialize the app
 app = Dash(__name__, assets_url_path="assets")
 server = app.server
@@ -247,7 +248,7 @@ def update_graphs(n_clicks):
         cache.delete_memoized(get_cached_data, get_z_score_plot)
         cache.delete_memoized(get_cached_data, get_mcpc_plot)
         cache.delete_memoized(get_cached_data, get_nupl_score_plot)
-        
+
     # Fetch and return the updated data for each plot
     return (
         get_cached_data(get_pi_top_plot),
