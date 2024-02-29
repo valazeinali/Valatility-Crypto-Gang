@@ -13,4 +13,4 @@ __pycache__/
 
 # cache
 .cache
-cache/
+cache/*
