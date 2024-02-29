@@ -45,7 +45,7 @@ def get_nupl_score(symbol,currency):
     fig.add_trace(go.Scatter(x=data['Date'], y=data['NUPL_Z_Score'], mode='lines', name='NUPL (Z-Score)', line=dict(color='white')), secondary_y=False)
 
     # Add trace for Bitcoin Close
-    fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], mode='lines', name='Bitcoin Close', line=dict(color='orange')), secondary_y=True)
+    fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], mode='lines', name=symbol + '$ 1D Close', line=dict(color='orange')), secondary_y=True)
 
     # Add neon green line at -3 on NUPL axis
     fig.add_shape(type="line", x0=data['Date'].iloc[0], y0=-3, x1=data['Date'].iloc[-1], y1=-3,
@@ -57,22 +57,30 @@ def get_nupl_score(symbol,currency):
 
     # Update layout
     fig.update_layout(
-        title_text='Bitcoin Relative Unrealized Profit/Loss (NUPL) Indicator with Close',
+        title_text=symbol + '$ 1D Relative Unrealized Profit/Loss (NUPL) Indicator with Close',
+        title_x=0.5,
         xaxis_title='Date',
         font=dict(family='Arial, sans-serif', color='white'),  # Set text color to white
-        plot_bgcolor='black',  # Set background color to black
-        paper_bgcolor='black',  # Set paper color to black
+        plot_bgcolor="rgba(17, 17, 17, 1)",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
         legend=dict(font=dict(color='white')),  # Set legend text color to white
         hovermode='x unified'
     )
-
+    
+    fig.update_layout(legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
+    
     # Update y-axis properties to remove gridlines
     fig.update_yaxes(showgrid=False, secondary_y=False)
     fig.update_yaxes(showgrid=False, secondary_y=True)
 
     # Update y-axis properties
     fig.update_yaxes(title_text="NUPL (Z-Score)", color='white', secondary_y=False)
-    fig.update_yaxes(title_text="Bitcoin Close (USD)", color='orange', type='log', secondary_y=True)
+    fig.update_yaxes(title_text=symbol + "$ 1D Close", color='orange', type='log', secondary_y=True)
 
     return fig
 
