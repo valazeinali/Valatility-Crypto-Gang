@@ -22,7 +22,7 @@ def calculate_nupl(upl, Closes):
 def calculate_z_score(data):
     return (data - data.mean()) / data.std()
 
-def get_nupl_score(symbol,currency):
+def get_nupl_score_plot(symbol,currency):
     # Fetch historical market data for Bitcoin
     data = get_historical_data(symbol, currency)
 
