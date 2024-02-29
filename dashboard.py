@@ -7,7 +7,7 @@ from pi_top import get_pi_top_plot
 from s2f import get_s2f_plot
 from seasonality_heatmap import get_seasonality_heatmap_plot
 from z_score import get_z_score_plot
-
+from nupl_score import get_nupl_score_plot
 # Initialize the app
 app = Dash(__name__, assets_url_path="assets")
 server = app.server
@@ -183,6 +183,34 @@ def send_layout():
                     ),
                 ]
             ),
+            html.Div(
+                children=[
+                    dcc.Graph(
+                        id="Bitcoin NUPL",
+                        style={"width": "100%", "vertical-align": "middle"},
+                        config={
+                            "displaylogo": False,
+                            "scrollZoom": True,
+                            "modeBarButtonsToAdd": [
+                                "drawline",
+                                "drawopenpath",
+                                "drawclosedpath",
+                                "drawcircle",
+                                "drawrect",
+                                "eraseshape",
+                            ],
+                        },
+                        figure={
+                            "layout": {
+                                "title": "Bitcoin NUPL",
+                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
+                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
+                                "font": {"color": "white"},
+                            }
+                        },
+                    ),
+                ]
+            ),
             html.Button("Update Data", id="update-data", n_clicks=0),
         ],
     )
@@ -206,6 +234,7 @@ def get_cached_data(func, symbol="BTC", currency="USD"):
         Output("Bitcoin S2F", "figure"),
         Output("Bitcoin Z-Score", "figure"),
         Output("Bitcoin MCPC", "figure"),
+        Output("Bitcoin NUPL", "figure"),
     ],
     [Input("update-data", "n_clicks")],
 )
@@ -217,7 +246,8 @@ def update_graphs(n_clicks):
         cache.delete_memoized(get_cached_data, get_s2f_plot)
         cache.delete_memoized(get_cached_data, get_z_score_plot)
         cache.delete_memoized(get_cached_data, get_mcpc_plot)
-
+        cache.delete_memoized(get_cached_data, get_nupl_score_plot)
+        
     # Fetch and return the updated data for each plot
     return (
         get_cached_data(get_pi_top_plot),
@@ -225,6 +255,7 @@ def update_graphs(n_clicks):
         get_cached_data(get_s2f_plot),
         get_cached_data(get_z_score_plot),
         get_cached_data(get_mcpc_plot),
+        get_cached_data(get_nupl_score_plot),
     )
 
 
