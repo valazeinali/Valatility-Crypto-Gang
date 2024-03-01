@@ -18,4 +18,4 @@ cache/
 tmp/cache/
 
 #parquet
-.parquet
+*.parquet
