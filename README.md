@@ -3,6 +3,7 @@
 ![Dashboard Image](https://github.com/valazeinali/Valatility-Crypto-Gang/blob/main/assets/Valatility.png)
 
 # https://valatility.com
+
 Welcome to the Valatility Crypto Top Ticking Dashboard project. This repository is the central hub for collaboration among members of the Valatility #crypto channel. Our objective is to develop a comprehensive dashboard for cryptocurrency tick data, utilizing various algorithms and strategies to provide insightful analytics and forecasts.
 
 ## Project Objective
@@ -22,59 +23,81 @@ The primary goal of this project is to aggregate real-time and historical crypto
 ### Prerequisites
 
 Before you begin, ensure you have met the following requirements:
-- Python 3.8 or higher
-- Pip (Python package installer)
 
-### Installation
+- **Python 3.8 or higher**: Make sure Python is installed on your system. You can check your Python version by running `python --version` or `python3 --version` in your terminal
+- **Pip** (Python package installer)
 
-1. Clone the repository to your local machine:
-   ```sh
-   git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
-    ```
-
-## Contribution
+### Installation & Contribution
 
 We welcome contributions from everyone. If you're interested in helping, please:
-1. Fork the repository.
-2. Install a virtual environment: venv, poetry, pipenv or pyenv.
-3. Intall package dependencies:
+
+1. Clone the repository to your local machine:
+
+```commandline
+git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
+```
+
+2. Navigate to the project directory:
+
+```commandline
+cd Valatility-Crypto-Gang
+```
+
+3. Install a virtual environment. Choose one of the following methods (example uses venv):
+
+```commandline
+python -m venv venv
+# Activate the virtual environment
+# On Windows
+.\venv\Scripts\activate
+# On Unix or MacOS
+source venv/bin/activate
+```
+
+4. Intall package dependencies:
+
 ```commandline
 pip install -r requirements.txt
 ```
-4. Create a new branch for your feature:
-```commandline
-git checkout -b feature/AmazingFeature
-```
-5. Commit your changes:
-```commandline
-git commit -m 'Add some AmazingFeature'
-```
-6. Push to the branch:
-```commandline
-git push origin feature/AmazingFeature
-```
 
-## Setting Up Pre-commit and Git Hooks
+## Setting Up Pre-commit Git Hooks and Pre-push Hooks
 
-This project uses `pre-commit` to manage Git hooks. To set up these hooks on your local machine:
+### Pre-commit Installation
 
-1. Install `pre-commit`. It requires Python and can be installed via pip, (this should be done automatically from step 3 of Contribution)
+This project utilizes pre-commit to manage Git hooks, enhancing code quality and consistency.
+Follow the steps below to set up these hooks on your local machine:
+
+1. Install `pre-commit`.
+   - This project requires Python. pre-commit can be installed via pip. The installation should be handled automatically
+     from step 4 of the Contribution section; however, if needed, it can be installed manually with the following command:
+
 ```commandline
 pip install pre-commit
 ```
-2. Install the Git hook scripts:
+
+2. Install the Git Hook scripts:
+   - To activate the pre-commit hooks in your local repository to automatically run on every commit, run the following command:
+
 ```commandline
 pre-commit install
 ```
-3. Optionally, run `pre-commit` against all the files to ensure everything is formatted properly:
+
+3. (Optionally), run `pre-commit` against all the files to ensure everything is formatted properly:
+   - To ensure your entire codebase is formatted and passes the hooks, execute:
+
 ```commandline
 pre-commit run --all-files
 ```
-By following these steps, `pre-commit` will automatically run the configured hooks on every commit.
-4. Setting git hooks on your local:
+
+### Setting Up Pre-push Hooks
+
+1. Install Pre-push Hooks
+   - Some workflows benefit from additional checks before pushing to remote repositories. To install pre-push hooks, run the provided script
+
 ```commandline
 bash install_hooks.sh
 ```
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
