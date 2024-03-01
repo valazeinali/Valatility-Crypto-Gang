@@ -1,14 +1,33 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0  # Use the latest revision
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+      - id: check-case-conflict
 
   - repo: https://github.com/psf/black
-    rev: 24.2.0  # Use the latest revision
+    rev: 24.2.0
     hooks:
       - id: black
         language_version: python3
+
+  # prettier: An opinionated code formatter that supports many languages and file formats (JSON, CSS, Markdown, etc.)
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+
+  # isort: Sorts Python import statements alphabetically within logical sections.
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+
+  # flake8: A Python tool that checks for style violations, programming errors, and complex or buggy constructs
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
