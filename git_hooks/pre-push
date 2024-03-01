@@ -43,9 +43,9 @@ fi
 # Check if the local main branch is behind the remote main branch
 # Adjust "origin" and "main" as necessary for your remote and branch names
 if git fetch --quiet && [ $(git rev-list --count main..origin/main) -gt 0 ]; then
-	echo "❌❌❌"
+	echo >&2 "❌❌❌"
     echo >&2 "❌ Your local main branch is behind the remote main branch. Please pull the latest changes before pushing."
-	echo "❌❌❌"
+	echo >&2 "❌❌❌"
     exit 1
 fi
 
