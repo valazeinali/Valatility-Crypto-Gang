@@ -16,3 +16,6 @@ __pycache__/
 .cache
 cache/
 tmp/cache/
+
+#parquet
+.parquet
