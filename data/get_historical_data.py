@@ -83,6 +83,10 @@ def get_historical_data(symbol, currency):
         )
         df["Date"] = pd.to_datetime(df["Date"], utc=True)
         df.set_index("Date", inplace=True)
+
+        # Drop rows where all values are 0.0
+        df = df.loc[~(df == 0.0).all(axis=1)]
+
         df.to_parquet(filename)
     return df
 

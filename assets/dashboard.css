@@ -57,3 +57,23 @@ button:hover {
   box-shadow: 0 0 2px #ff0; /* Enhanced yellow glow effect */
 
 }
+
+.dash-dropdown {
+    width: 25%;
+    font-family: sans-serif;
+    margin: 0 auto
+}
+.Select-control {
+    background-color: rgb(25, 25, 25) !important;
+    color:white;
+  }
+
+.Select-menu-outer {
+    background-color: rgb(25, 25, 25);
+    color: white;
+}
+
+.Select-value-label {
+    color: white !important;
+
+}

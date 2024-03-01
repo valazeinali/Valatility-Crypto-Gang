@@ -9,209 +9,113 @@ from seasonality_heatmap import get_seasonality_heatmap_plot
 from z_score import get_z_score_plot
 from nupl_score import get_nupl_score_plot
 
-# Initialize the app
-app = Dash(__name__, assets_url_path="assets")
+app = Dash(__name__)
 server = app.server
 app.title = "Valatility Crypto Dashboard"
 
-# Configure cache
 cache = Cache(
     app.server,
     config={
-        "CACHE_TYPE": "FileSystemCache",  # Simple caching strategy, suitable for development/testing
+        "CACHE_TYPE": "FileSystemCache",
         "CACHE_DIR": "cache",
-        "CACHE_DEFAULT_TIMEOUT": 3600,  # 86,400 seconds == 24 hours
+        "CACHE_DEFAULT_TIMEOUT": 3600,
     },
 )
 
-# Define your color scheme
-colors = {
-    "main-background": "#111111",
-    "header-text": "#ff7575",
-    "sub-text": "#ffd175",
-    "text": "#ff7575",
-}
 
-
-# Define the app layout
 def send_layout():
     return html.Div(
-        # Style property is commented out, can be enabled if needed.
-        # style={"backgroundColor": colors["main-background"]},
-        className="left_light_ball",
+        className="container",
         children=[
-            html.H1(
-                children="Valatility Crypto Dashboard",
-                style={"textAlign": "center"},
-            ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin Pi Cycle Top",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
+            html.H1("Valatility Crypto Dashboard", style={"textAlign": "center"}),
+            # Updated dcc.Dropdown with styled options
+            dcc.Dropdown(
+                id="crypto-selector",
+                className="crypto-dropdown",
+                options=[
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/bitcoin.svg", height=20),
+                                html.Span(
+                                    "Bitcoin (BTC)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
                             ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin Pi Cycle Top",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "BTC",
+                    },
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/ethereum.svg", height=20),
+                                html.Span(
+                                    "Ethereum (ETH)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
+                            ],
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "ETH",
+                    },
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/solana.svg", height=20),
+                                html.Span(
+                                    "Solana (SOL)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
+                            ],
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "SOL",
+                    },
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/xrp.svg", height=20),
+                                html.Span(
+                                    "Ripple (XRP)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
+                            ],
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "XRP",
+                    },
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/bnb.svg", height=20),
+                                html.Span(
+                                    "Binance Coin (BNB)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
+                            ],
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "BNB",
+                    },
+                    {
+                        "label": html.Span(
+                            [
+                                html.Img(src="/assets/litecoin.svg", height=20),
+                                html.Span(
+                                    "Litecoin (LTC)",
+                                    style={"font-size": 15, "padding-left": 10},
+                                ),
+                            ],
+                            style={"align-items": "center", "display": "flex"},
+                        ),
+                        "value": "LTC",
+                    },
                 ],
+                value="BTC",  # Default value
+                clearable=False,
             ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin Seasonality Heatmap",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
-                            ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin Seasonality Heatmap",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
-                ],
-            ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin S2F",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
-                            ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin S2F",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
-                ]
-            ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin Z-Score",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
-                            ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin Z-Score",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
-                ]
-            ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin MCPC",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
-                            ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin MCPC",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
-                ]
-            ),
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="Bitcoin NUPL",
-                        style={"width": "100%", "vertical-align": "middle"},
-                        config={
-                            "displaylogo": False,
-                            "scrollZoom": True,
-                            "modeBarButtonsToAdd": [
-                                "drawline",
-                                "drawopenpath",
-                                "drawclosedpath",
-                                "drawcircle",
-                                "drawrect",
-                                "eraseshape",
-                            ],
-                        },
-                        figure={
-                            "layout": {
-                                "title": "Bitcoin NUPL",
-                                "plot_bgcolor": "rgba(17, 17, 17, 1)",
-                                "paper_bgcolor": "rgba(0, 0, 0, 0)",
-                                "font": {"color": "white"},
-                            }
-                        },
-                    ),
-                ]
-            ),
+            html.Div(id="graphs-container"),
             html.Button("Update Data", id="update-data", n_clicks=0),
         ],
     )
@@ -220,47 +124,200 @@ def send_layout():
 app.layout = send_layout
 
 
-# Function to fetch or refresh cached data
 @cache.memoize()
 def get_cached_data(func, symbol="BTC", currency="USD"):
-    # Assuming this function uses parameters to generate cache key and fetches data.
     return func(symbol=symbol, currency=currency)
 
 
-# Callbacks to update each graph using the cached data
 @app.callback(
-    [
-        Output("Bitcoin Pi Cycle Top", "figure"),
-        Output("Bitcoin Seasonality Heatmap", "figure"),
-        Output("Bitcoin S2F", "figure"),
-        Output("Bitcoin Z-Score", "figure"),
-        Output("Bitcoin MCPC", "figure"),
-        Output("Bitcoin NUPL", "figure"),
-    ],
-    [Input("update-data", "n_clicks")],
+    Output("graphs-container", "children"),
+    [Input("update-data", "n_clicks"), Input("crypto-selector", "value")],
 )
-def update_graphs(n_clicks):
+def update_graphs(n_clicks, selected_crypto):
+    # Assuming the necessity to fetch fresh data when "Update Data" is clicked
     if n_clicks > 0:
-        # Clear the cache for these specific plots when button is clicked
-        cache.delete_memoized(get_cached_data, get_pi_top_plot)
-        cache.delete_memoized(get_cached_data, get_seasonality_heatmap_plot)
-        cache.delete_memoized(get_cached_data, get_s2f_plot)
-        cache.delete_memoized(get_cached_data, get_z_score_plot)
-        cache.delete_memoized(get_cached_data, get_mcpc_plot)
-        cache.delete_memoized(get_cached_data, get_nupl_score_plot)
+        cache.clear()  # Clearing the whole cache. Use delete_memoized for specific func if needed.
 
-    # Fetch and return the updated data for each plot
-    return (
-        get_cached_data(get_pi_top_plot),
-        get_cached_data(get_seasonality_heatmap_plot),
-        get_cached_data(get_s2f_plot),
-        get_cached_data(get_z_score_plot),
-        get_cached_data(get_mcpc_plot),
-        get_cached_data(get_nupl_score_plot),
-    )
+    if selected_crypto == "BTC":
+        graphs = [
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_pi_top_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(
+                    get_seasonality_heatmap_plot, symbol=selected_crypto
+                ),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_s2f_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_z_score_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_mcpc_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_nupl_score_plot, symbol=selected_crypto),
+            ),
+        ]
+        return graphs
+    else:
+        graphs = [
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_pi_top_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(
+                    get_seasonality_heatmap_plot, symbol=selected_crypto
+                ),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_z_score_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_mcpc_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_nupl_score_plot, symbol=selected_crypto),
+            ),
+        ]
+        return graphs
 
 
-# Run the app
 if __name__ == "__main__":
-
-    app.run_server(port=1333)
+    app.run_server(
+        debug=True
+    )  # Consider setting debug=False for production environments
