@@ -3,6 +3,8 @@ import datetime
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+from data.get_historical_data import get_historical_data
+
 
 def get_rainbow(symbol, currency):
     # Get Bitcoin historical data
