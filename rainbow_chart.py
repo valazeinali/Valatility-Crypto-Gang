@@ -7,7 +7,7 @@ from data.get_historical_data import get_historical_data
 def rgb_to_plotly_color(rgb):
     return 'rgb({}, {}, {})'.format(rgb[0], rgb[1], rgb[2])
 
-def get_rainbow(symbol, currency):
+def get_rainbow_plot(symbol, currency):
     # Get Bitcoin historical data
     prices = get_historical_data(symbol, currency)
     
