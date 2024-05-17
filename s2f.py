@@ -62,6 +62,7 @@ def get_s2f_plot(symbol, currency):
         plot_bgcolor="rgba(17, 17, 17, 1)",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         font=dict(color="white"),
+        yaxis=dict(showticklabels=True, showgrid=False)
     )
 
     fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
