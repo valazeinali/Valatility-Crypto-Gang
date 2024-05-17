@@ -8,7 +8,7 @@ from s2f import get_s2f_plot
 from seasonality_heatmap import get_seasonality_heatmap_plot
 from z_score import get_z_score_plot
 from nupl_score import get_nupl_score_plot
-
+from rainbow_chart import get_rainbow_plot
 app = Dash(__name__)
 server = app.server
 app.title = "Valatility Crypto Dashboard"
@@ -153,6 +153,21 @@ def update_graphs(n_clicks, selected_crypto):
                         "eraseshape",
                     ],
                 },
+                figure=get_cached_data(get_rainbow_plot, symbol=selected_crypto),
+            ),
+            dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
                 figure=get_cached_data(get_pi_top_plot, symbol=selected_crypto),
             ),
             dcc.Graph(
@@ -236,6 +251,21 @@ def update_graphs(n_clicks, selected_crypto):
         return graphs
     else:
         graphs = [
+             dcc.Graph(
+                config={
+                    "displaylogo": False,
+                    "scrollZoom": True,
+                    "modeBarButtonsToAdd": [
+                        "drawline",
+                        "drawopenpath",
+                        "drawclosedpath",
+                        "drawcircle",
+                        "drawrect",
+                        "eraseshape",
+                    ],
+                },
+                figure=get_cached_data(get_rainbow_plot, symbol=selected_crypto),
+            ),
             dcc.Graph(
                 config={
                     "displaylogo": False,
