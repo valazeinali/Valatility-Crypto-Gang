@@ -22,16 +22,28 @@ sudo systemctl enable docker
 sudo docker run hello-world
 
 # Install Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '(?<=tag_name": "v)[^"]*')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '(?<=tag_name": "v)[^"]*')
+sudo curl -L "https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# Apply executable permissions to the Docker Compose binary
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Verify Docker Compose installation
-docker-compose --version
+if ! command -v docker-compose &> /dev/null
+then
+    echo "Docker Compose could not be installed"
+    exit 1
+else
+    echo "Docker Compose installed successfully: $(docker-compose --version)"
+fi
 
 # Clone the GitHub repository
-git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
+if [ ! -d "Valatility-Crypto-Gang" ]; then
+    git clone https://github.com/valazeinali/Valatility-Crypto-Gang.git
+fi
 cd Valatility-Crypto-Gang
 
 # Build and run the Docker container
 sudo docker-compose build
 sudo docker-compose up -d
+
