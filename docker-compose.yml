@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: gunicorn -w 4 --bind 0.0.0.0:8000 dashboard:server
